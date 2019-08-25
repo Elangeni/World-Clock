@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>JS + CSS Clock</title>
+</head>
+
+<body>
+
+
+  <div class="clock">
+    <div class="clock-face">
+      <div class="hand hour-hand small-clock"></div>
+      <div class="hand min-hand small-clock"></div>
+      <div class="hand second-hand small-clock"></div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="clock new-york city">
+      <div class="clock-face">
+        <div class="hand ny-hour-hand small-clock"></div>
+        <div class="hand ny-min-hand small-clock"></div>
+        <div class="hand ny-second-hand small-clock"></div>
+      </div>
+    </div>
+
+    <div class="clock tokyo city">
+      <div class="clock-face">
+        <div class="hand tokyo-hour-hand small-clock"></div>
+        <div class="hand tokyo-min-hand small-clock"></div>
+        <div class="hand tokyo-second-hand small-clock"></div>
+      </div>
+    </div>
+
+    <div class="clock moscow city">
+      <div class="clock-face">
+        <div class="hand moscow-hour-hand small-clock"></div>
+        <div class="hand moscow-min-hand small-clock"></div>
+        <div class="hand moscow-second-hand small-clock"></div>
+      </div>
+    </div>
+
+    <div class="clock london city">
+      <div class="clock-face">
+        <div class="hand london-hour-hand small-clock"></div>
+        <div class="hand london-min-hand small-clock"></div>
+        <div class="hand london-second-hand small-clock"></div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <style>
+    html {
+      background: #018DED url(https://images.unsplash.com/photo-1502920514313-52581002a659?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1494&q=80);
+      background-size: cover;
+      font-family: 'helvetica neue';
+      text-align: center;
+      font-size: 10px;
+    }
+
+    body {
+      margin: 0;
+      font-size: 2rem;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-height: 100vh;
+      align-items: center;
+    }
+
+    .row {
+      display: flex;
+      flex-direction: row;
+    }
+
+    .clock {
+      width: 30rem;
+      height: 30rem;
+      border: 20px solid white;
+      border-radius: 50%;
+      margin: 50px auto;
+      position: relative;
+      padding: 2rem;
+      box-shadow:
+        0 0 0 4px rgba(0, 0, 0, 0.1),
+        inset 0 0 0 3px #EFEFEF,
+        inset 0 0 10px black,
+        0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .city {
+      width: 10rem;
+      height: 10rem;
+      border: 10px solid white;
+      border-radius: 50%;
+      margin: 50px 50px;
+      padding: 10%;
+      position: relative;
+      padding: 2rem;
+      box-shadow:
+        0 0 0 4px rgba(0, 0, 0, 0.1),
+        inset 0 0 0 3px #EFEFEF,
+        inset 0 0 10px black,
+        0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .clock-face {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform: translateY(-3px);
+      /* account for the height of the clock hands */
+    }
+
+    .hand {
+      width: 50%;
+      height: 6px;
+      background: black;
+      position: absolute;
+      top: 50%;
+      transform-origin: 100%;
+      transform: rotate(90deg);
+      transition: all 0.05s;
+      transition-timing-function: cubic-bezier(0.1, 2.7, 0.58, 1);
+    }
+  </style>
+
+   <script > 
+
+    // Main Clock 
+
+    const minuteHand = document.querySelector('.min-hand');
+    const hourHand = document.querySelector('.hour-hand');
+    const secondHand = document.querySelector('.second-hand');
+
+    function setDate() {
+      const now = new Date();
+      const seconds = now.getSeconds();
+      const secondsDeg = ((seconds / 60) * 360) + 90;
+      secondHand.style.transform = `rotate(${secondsDeg}deg)`;
+
+      const minute = now.getMinutes();
+      const minuteDeg = ((minute / 60) * 360) + 90;
+      minuteHand.style.transform = `rotate(${minuteDeg}deg)`;
+
+      const hour = now.getHours();
+      const hourDeg = ((hour / 12) * 360) + 90;
+      hourHand.style.transform = `rotate(${hourDeg}deg)`;
+    }
+
+    setInterval(setDate, 1000);// How often to run the function
+
+    // New York Clock
+
+    const nyMinuteHand = document.querySelector('.ny-min-hand');
+    const nyHourHand = document.querySelector('.ny-hour-hand');
+    const nySecondHand = document.querySelector('.ny-second-hand');
+
+    function setNYDate() {
+      const now = new Date();
+
+      const seconds = now.getSeconds();
+      const secondsDeg = ((seconds / 60) * 360) + 90;
+      nySecondHand.style.transform = `rotate(${secondsDeg}deg)`;
+
+      const minute = now.getMinutes();
+      const minuteDeg = ((minute / 60) * 360) + 90;
+      nyMinuteHand.style.transform = `rotate(${minuteDeg}deg)`;
+
+      const hour = now.getHours();
+      const hourDeg = ((hour / 12) * 360) + 90;
+      nyHourHand.style.transform = `rotate(${hourDeg}deg)`;
+    }
+    setInterval(setNYDate, 1000);// How often to run the function
+
+    // Tokyo Clock
+    const tokyoMinuteHand = document.querySelector('.tokyo-min-hand');
+    const tokyoHourHand = document.querySelector('.tokyo-hour-hand');
+    const tokyoSecondHand = document.querySelector('.tokyo-second-hand');
+
+    function setTimeTokyo() {
+      offset = 9;
+
+      const d = new Date();
+      const utc = d.getTime() + (d.getTimezoneOffset() * 60000);
+      const now = new Date(utc + (3600000 * offset));
+
+      const seconds = now.getSeconds();
+      const secondsDeg = ((seconds / 60) * 360) + 90;
+      tokyoSecondHand.style.transform = `rotate(${secondsDeg}deg)`;
+
+      const minute = now.getMinutes();
+      const minuteDeg = ((minute / 60) * 360) + 90;
+      tokyoMinuteHand.style.transform = `rotate(${minuteDeg}deg)`;
+
+      const hour = now.getHours();
+      const hourDeg = ((hour / 12) * 360) + 90;
+      tokyoHourHand.style.transform = `rotate(${hourDeg}deg)`;
+    }
+    setInterval(setTimeTokyo, 1000);
+
+    // Moscow Clock
+    const moscowMinuteHand = document.querySelector('.moscow-min-hand');
+    const moscowHourHand = document.querySelector('.moscow-hour-hand');
+    const moscowSecondHand = document.querySelector('.moscow-second-hand');
+
+    function setTimeMoscow() {
+      offset = 3;
+
+      const d = new Date();
+      const utc = d.getTime() + (d.getTimezoneOffset() * 60000);
+      const now = new Date(utc + (3600000 * offset));
+
+      const seconds = now.getSeconds();
+      const secondsDeg = ((seconds / 60) * 360) + 90;
+      moscowSecondHand.style.transform = `rotate(${secondsDeg}deg)`;
+
+      const minute = now.getMinutes();
+      const minuteDeg = ((minute / 60) * 360) + 90;
+      moscowMinuteHand.style.transform = `rotate(${minuteDeg}deg)`;
+
+      const hour = now.getHours();
+      const hourDeg = ((hour / 12) * 360) + 90;
+      moscowHourHand.style.transform = `rotate(${hourDeg}deg)`;
+    }
+    setInterval(setTimeMoscow, 1000);
+
+    // London Clock
+    const londonMinuteHand = document.querySelector('.london-min-hand');
+    const londonHourHand = document.querySelector('.london-hour-hand');
+    const londonSecondHand = document.querySelector('.london-second-hand');
+
+    function setTimeLondon() {
+      offset = 1;
+
+      const d = new Date();
+      const utc = d.getTime() + (d.getTimezoneOffset() * 60000);
+      const now = new Date(utc + (3600000 * offset));
+
+      const seconds = now.getSeconds();
+      const secondsDeg = ((seconds / 60) * 360) + 90;
+      londonSecondHand.style.transform = `rotate(${secondsDeg}deg)`;
+
+      const minute = now.getMinutes();
+      const minuteDeg = ((minute / 60) * 360) + 90;
+      londonMinuteHand.style.transform = `rotate(${minuteDeg}deg)`;
+
+      const hour = now.getHours();
+      const hourDeg = ((hour / 12) * 360) + 90;
+      londonHourHand.style.transform = `rotate(${hourDeg}deg)`;
+    }
+    setInterval(setTimeLondon, 1000);
+
+   </script> 
+</body>
+
+</html>
