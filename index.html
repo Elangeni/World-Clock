@@ -3,11 +3,20 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>JS + CSS Clock</title>
+  <title>World Clock</title>
+
+  <link rel="stylesheet" href="styles.css">
+
 </head>
 
 <body>
 
+  <div class="heading">World Clock</div>
+
+  <form class="search-form">
+    <input type="text" class="search" placeholder="City or State">
+  </form>
+  
 
   <div class="clock">
     <div class="clock-face">
@@ -52,86 +61,7 @@
   </div>
 
 
-
-
-  <style>
-    html {
-      background: #018DED url(https://images.unsplash.com/photo-1502920514313-52581002a659?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1494&q=80);
-      background-size: cover;
-      font-family: 'helvetica neue';
-      text-align: center;
-      font-size: 10px;
-    }
-
-    body {
-      margin: 0;
-      font-size: 2rem;
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-      min-height: 100vh;
-      align-items: center;
-    }
-
-    .row {
-      display: flex;
-      flex-direction: row;
-    }
-
-    .clock {
-      width: 30rem;
-      height: 30rem;
-      border: 20px solid white;
-      border-radius: 50%;
-      margin: 50px auto;
-      position: relative;
-      padding: 2rem;
-      box-shadow:
-        0 0 0 4px rgba(0, 0, 0, 0.1),
-        inset 0 0 0 3px #EFEFEF,
-        inset 0 0 10px black,
-        0 0 10px rgba(0, 0, 0, 0.2);
-    }
-
-    .city {
-      width: 10rem;
-      height: 10rem;
-      border: 10px solid white;
-      border-radius: 50%;
-      margin: 50px 50px;
-      padding: 10%;
-      position: relative;
-      padding: 2rem;
-      box-shadow:
-        0 0 0 4px rgba(0, 0, 0, 0.1),
-        inset 0 0 0 3px #EFEFEF,
-        inset 0 0 10px black,
-        0 0 10px rgba(0, 0, 0, 0.2);
-    }
-
-    .clock-face {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      transform: translateY(-3px);
-      /* account for the height of the clock hands */
-    }
-
-    .hand {
-      width: 50%;
-      height: 6px;
-      background: black;
-      position: absolute;
-      top: 50%;
-      transform-origin: 100%;
-      transform: rotate(90deg);
-      transition: all 0.05s;
-      transition-timing-function: cubic-bezier(0.1, 2.7, 0.58, 1);
-    }
-  </style>
-
-   <script > 
-
+  <script>
     // Main Clock 
 
     const minuteHand = document.querySelector('.min-hand');
@@ -256,7 +186,54 @@
     }
     setInterval(setTimeLondon, 1000);
 
-   </script> 
+
+    //Seach bar
+    const endpoint = 'https://raw.githubusercontent.com/lutangar/cities.json/master/cities.json';
+    const cities = [];
+    const latitude = '';
+    const longitue = '';
+    const baseURL = 'http://api.timezonedb.com/v2.1/get-time-zone?key=GB0EQOW0JW9U&format=json&by=position&lat=' + latitude + '&lng=' + longitue;
+
+    //Create array of cities
+    fetch(endpoint)
+      .then(blob => blob.json())
+      .then(data => {
+        for (var i = 0; i < 128769; i++) {
+          cities.push(data[i]);
+        }
+      });
+
+    var request = new XMLHttpRequest();
+
+    // Open a new connection, using the GET request on the URL endpoint
+      request.open('GET', baseURL, true)
+
+      request.onload = function () {
+        // Begin accessing JSON data here
+        var data = (JSON.parse(this.response));
+        console.table(data);
+        console.log(data.gmtOffset);
+      }
+
+
+      // Send request
+      request.send()
+
+    function findMatches(cityToMatch, countryToMatch){
+  return cities.filter(place => {
+    //figure out if the city or state matches what was searched.
+    const cityRegex = new RegExp(cityToMatch, 'gi');
+    const countryRegex = new RegExp(countryToMatch, 'gi');
+    return place.name.match(cityRegex) || place.country.match(countryRegex);
+  });
+
+  
+
+
+}
+
+  </script>
 </body>
+
 
 </html>
